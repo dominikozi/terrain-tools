@@ -36,17 +36,23 @@ generated-data destination.
 - **Terrain Surface System** — up to 20 layers; Top2/Top3/Top4 selection; height
   blending; anti-tiling; stochastic sampling; global texturing; triplanar
   projection; procedural bake/restore; and terrain-aware mesh blending.
+![Terrain Surface System Main Settings](Documentation~/Images/terrain-surface-system-main-settings.png)
 - **Composite Layer Painter** — paints a normalized, noise-modulated mixture of
   TerrainLayer assets on one selected Terrain. Entries are chosen from a
   searchable thumbnail grid populated by that Terrain.
 - **Detail Preset Painter** — paints or erases weighted detail prefab/texture
   presets and follows the Terrain under the cursor. Its picker exposes only
   detail prototypes registered on the selected Terrain.
+![Detail Preset Painter](Documentation~/Images/detail-preset-painter-1.png)
 - **Relative Height Brush** — circle, square, linear slope, curve slope, field
   furrows, and single-furrow shapes with live height preview.
+![Relative Height Brush](Documentation~/Images/relative-height-brush-1.png)
+![Relative Height Brush 2](Documentation~/Images/relative-height-brush-2.png)
 - **Tree Preset Painter** — paints weighted native `TreeInstance` presets with
   scale, rotation, density, erase, and minimum-spacing controls, using visual
   prefab selection from the Terrain's tree prototypes.
+![Tree preset painter](Documentation~/Images/tree-preset-painter-1.png)
+![Tree preset painter 2](Documentation~/Images/tree-preset-painter-2.png)
 
 Tree and Detail presets store asset references rather than Terrain prototype
 indices. A missing or ambiguous mapping blocks painting with a specific error.
