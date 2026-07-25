@@ -1,0 +1,10 @@
+* text=auto
+*.cs text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.shader text eol=crlf
+*.hlsl text eol=crlf
+*.cginc text eol=crlf
+*.png binary

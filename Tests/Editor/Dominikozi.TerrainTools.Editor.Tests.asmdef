@@ -1,0 +1,22 @@
+{
+  "name": "Dominikozi.TerrainTools.Editor.Tests",
+  "rootNamespace": "Dominikozi.TerrainTools.Tests.Editor",
+  "references": [
+    "Dominikozi.TerrainTools.Runtime",
+    "Dominikozi.TerrainTools.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

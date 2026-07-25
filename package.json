@@ -1,0 +1,21 @@
+{
+  "name": "com.dominikozi.terrain-tools",
+  "version": "1.0.0",
+  "displayName": "Terrain Tools",
+  "description": "Production-oriented terrain surface rendering, procedural baking, mesh blending, and Scene view painting tools for Unity 6 URP.",
+  "unity": "6000.4",
+  "unityRelease": "0f1",
+  "dependencies": {
+    "com.unity.render-pipelines.universal": "17.4.0"
+  },
+  "keywords": [
+    "terrain",
+    "urp",
+    "editor",
+    "painting",
+    "shader"
+  ],
+  "author": {
+    "name": "dominikozi"
+  }
+}

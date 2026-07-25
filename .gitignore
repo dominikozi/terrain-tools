@@ -1,0 +1,85 @@
+# Unity-generated project data
+.utmp/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]in/
+[Aa]rtifacts/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+ExportedObj/
+[Bb]urstDebugInformation_DoNotShip*/
+.gradle/
+.consulo/
+
+# This repository root is a UPM package, not a Unity project.
+/Assets/
+/Packages/
+/ProjectSettings/
+
+# IDE and generated solution files
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.DotSettings.user
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# Unity-generated metadata for ignored IDE/debug files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Test and coverage output
+[Tt]est[Rr]esults/
+[Cc]overage/
+[Cc]ode[Cc]overage/
+[Cc]overage[Rr]eports/
+*.coverage
+*.coveragexml
+*.trx
+
+# Logs, crash reports, and editor backup files
+*.log
+sysinfo.txt
+mono_crash.*
+*.blend1
+*.blend1.meta
+
+# Player builds and exported packages
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+*.tgz
+*.nupkg
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Generated package consumers' data must never be committed here.
+Generated/
+**/Generated/
