@@ -79,7 +79,8 @@ geometry. Side-facing X/Z projections can still blend with each other.
 
 *Triplanar projection removes the severe vertical stretching visible on steep
 heightfield walls. Enable it selectively because every active layer evaluates
-three projections.*
+three projections which leads to higher performance cost, hovewer when enabled
+only for selected number of layers, its negligible.*
 
 ### Global texturing
 

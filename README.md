@@ -1,5 +1,9 @@
 # Terrain Tools
 
+> The repository does not contain the tools full development history because they were 
+> originally created and used inside a private project. I extracted them into this standalone 
+> package once they were already complete.
+
 Terrain Tools is a Unity 6 URP package for building large, varied terrains
 without fighting the limitations of the standard Terrain workflow. It combines
 a terrain material that can height-blend up to 20 layers with practical Scene
@@ -20,6 +24,7 @@ brushes. The result is less repetitive manual work and more consistent terrain
 across a larger world.
 
 This is a personal tool built around my own production needs and workflow.
+
 
 > **Screenshot asset notice:** Screenshots in this repository show example
 > Terrain Layers, detail prototypes, tree prefabs, and environment assets.
@@ -83,8 +88,11 @@ to work across a tiled landscape.
 The **Relative Height Brush** creates shapes that are awkward to build with
 Unity's standard raise, lower, and smooth tools. It includes circles, squares,
 straight and curve-controlled slopes, repeated field furrows, and individual
-furrows. A live Scene view preview shows the target surface before it is
-applied, and the brush can work continuously across adjacent Terrain tiles.
+furrows. It also makes it easy to flatten an area or raise or lower it by an
+exact number of world units and flatten it at the resulting height, which
+Unity's default Terrain brushes do not provide directly. A live Scene view
+preview shows the target surface before it is applied, and the brush can work
+continuously across adjacent Terrain tiles.
 
 ![Relative Height Brush](Documentation~/Images/relative-height-brush-1.png)
 ![Curve-controlled slope brush](Documentation~/Images/relative-height-brush-2.png)
