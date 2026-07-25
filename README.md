@@ -72,7 +72,6 @@ There is no index fallback.
 
 ## Documentation
 
-- [Installation and setup](Documentation~/installation.md)
 - [Architecture](Documentation~/architecture.md)
 - [Performance](Documentation~/performance.md)
 - [Terrain Surface System](Documentation~/terrain-surface-system.md)
