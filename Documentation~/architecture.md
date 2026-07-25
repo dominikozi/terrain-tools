@@ -11,15 +11,6 @@ mapping, and Scene view preview code.
 
 `Tests/Editor` validates the editor workflows and runtime binding behavior.
 
-## Assemblies and namespaces
-
-- `Dominikozi.TerrainTools.Runtime` — namespace `Dominikozi.TerrainTools`.
-- `Dominikozi.TerrainTools.Editor` — editor services and
-  `Dominikozi.TerrainTools.Editor.Painters`.
-- `Dominikozi.TerrainTools.Editor.Tests` — EditMode tests.
-
-Runtime internals are visible only to the package Editor and test assemblies.
-
 ## Asset ownership
 
 `TerrainToolsAssetLocator` is the only authority for package asset paths.
