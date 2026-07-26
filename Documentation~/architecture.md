@@ -32,6 +32,11 @@ shape evaluation, heightmap writes, and preview source.
 Tree and Detail deliberately have no index compatibility path. This prevents a
 preset from silently painting the wrong prototype after TerrainData reordering.
 
+`TerrainDataTransferWindow` owns source and target selection.
+`TerrainDataTransferService` copies authoritative prototype lists and remaps
+compatible target painting by stable asset reference. The service never copies
+the source tile's painted layout to another tile.
+
 ## Render binding
 
 The Terrain Surface Group binds profile arrays, layer parameters, control maps,

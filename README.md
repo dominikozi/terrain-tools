@@ -105,6 +105,21 @@ creating a first pass over a large terrain or keeping neighboring tiles
 consistent. You can preview the result before changing the Terrain, and a
 backup is created before a full bake so the previous alphamaps can be restored.
 
+### Keep tiled terrains on the same prototype setup
+
+The **Terrain Data Transfer** window copies any combination of Terrain Layers,
+detail prototypes, and tree prototypes from one authoritative Terrain to a
+manual or automatically discovered list of target Terrains. It preserves
+existing target painting by matching the underlying layer assets, detail
+assets, and tree prefabs, then remaps their indices to the source order.
+
+Definitions that do not exist on the source are intentionally removed together
+with painting that depends on them. The tool does not duplicate the source
+Terrain's painted layout onto every tile, and the complete operation supports
+Undo.
+
+![Terrain Data Transfer](Documentation~/Images/terrain-data-transfer.png)
+
 ### Blend meshes into the terrain
 
 The package can blend meshes such as rocks, paths, or cliff pieces into the
@@ -140,5 +155,6 @@ enabled only for the layers that need them.
 - [Tree Preset Painter](Documentation~/tree-preset-painter.md)
 - [Detail Preset Painter](Documentation~/detail-preset-painter.md)
 - [Relative Height Brush](Documentation~/relative-height-brush.md)
+- [Terrain Data Transfer](Documentation~/terrain-data-transfer.md)
 - [Performance](Documentation~/performance.md)
 - [Architecture](Documentation~/architecture.md)
