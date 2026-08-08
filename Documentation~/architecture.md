@@ -7,7 +7,7 @@ blend component, shader IDs, shaders, and bundled noise textures.
 
 `Editor` contains all asset generation, validation, procedural evaluation,
 backup codecs, painter windows, painter settings, stroke transactions, prototype
-mapping, and Scene view preview code.
+mapping, boundary naturalization, and Scene view preview code.
 
 `Tests/Editor` validates the editor workflows and runtime binding behavior.
 
@@ -36,6 +36,20 @@ preset from silently painting the wrong prototype after TerrainData reordering.
 `TerrainDataTransferService` copies authoritative prototype lists and remaps
 compatible target painting by stable asset reference. The service never copies
 the source tile's painted layout to another tile.
+
+## Boundary naturalization
+
+The Terrain Boundary Naturalizer is an editor-only alphamap workflow. Its
+window owns Scene view input and persistent project settings. The service
+validates the Terrain Surface Group, captures padded alphamap snapshots, and
+applies cropped results as one Undo operation. Detection, topology cleanup,
+stroke masking, terrain coordinate conversion, and weight processing remain
+separate internal types.
+
+World-space sampling reads adjacent tiles through the snapshot sampler, which
+keeps displacement and island generation continuous at terrain seams. The tool
+does not modify heightmaps, detail maps, tree instances, Terrain Layers, or
+runtime rendering state.
 
 ## Render binding
 

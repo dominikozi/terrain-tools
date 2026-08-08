@@ -58,6 +58,22 @@ the final layer weights correctly normalized.
 
 ![Composite Layer Painter](Documentation~/Images/composite-layer-painter.png)
 
+### Naturalize painted material boundaries
+
+The **Terrain Boundary Naturalizer** reshapes existing boundaries between
+painted Terrain Layers without changing the terrain height, details, trees, or
+height-blend setup. A Scene view brush applies layered world-space noise to the
+edge, with either a clean continuous result or small material islands near the
+main boundary.
+
+The tool can follow the locally dominant pair automatically or work only on two
+selected Terrain Layers. Strokes remain continuous across terrain tiles in one
+Terrain Surface Group, and each complete drag is one Undo operation.
+
+| Before | After |
+| --- | --- |
+| ![Straight painted boundary before naturalization](Documentation~/Images/boundary-before.png) | ![Organic painted boundary after naturalization](Documentation~/Images/boundary-after.png) |
+
 ### Paint varied groups of trees
 
 The **Tree Preset Painter** lets one brush place several tree prefabs according
@@ -155,6 +171,7 @@ enabled only for the layers that need them.
 - [Tree Preset Painter](Documentation~/tree-preset-painter.md)
 - [Detail Preset Painter](Documentation~/detail-preset-painter.md)
 - [Relative Height Brush](Documentation~/relative-height-brush.md)
+- [Terrain Boundary Naturalizer](Documentation~/terrain-boundary-naturalizer.md)
 - [Terrain Data Transfer](Documentation~/terrain-data-transfer.md)
 - [Performance](Documentation~/performance.md)
 - [Architecture](Documentation~/architecture.md)
