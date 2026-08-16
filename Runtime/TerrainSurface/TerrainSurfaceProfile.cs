@@ -37,6 +37,8 @@ namespace Dominikozi.TerrainTools
         [SerializeField, Min(0f)] private float heightContrast = 1f;
 
         [Header("Surface")]
+        [SerializeField] private bool tintEnabled;
+        [SerializeField, ColorUsage(false, false)] private Color tint = Color.white;
         [SerializeField, Min(0f)] private float normalStrength = 1f;
         [SerializeField, Range(0f, 2f)] private float metallicMultiplier = 1f;
         [SerializeField, Range(0f, 2f)] private float smoothnessMultiplier = 1f;
@@ -71,6 +73,14 @@ namespace Dominikozi.TerrainTools
         /// Gets the configured Height Contrast value.
         /// </summary>
         public float HeightContrast => heightContrast;
+        /// <summary>
+        /// Gets a value indicating whether the per-layer tint is enabled.
+        /// </summary>
+        public bool TintEnabled => tintEnabled;
+        /// <summary>
+        /// Gets the configured per-layer tint value.
+        /// </summary>
+        public Color Tint => tint;
         /// <summary>
         /// Gets the configured Normal Strength value.
         /// </summary>
@@ -148,6 +158,10 @@ namespace Dominikozi.TerrainTools
         {
             heightOffset = Mathf.Clamp(heightOffset, -1f, 1f);
             heightContrast = Mathf.Max(0f, heightContrast);
+            tint.r = Mathf.Clamp01(tint.r);
+            tint.g = Mathf.Clamp01(tint.g);
+            tint.b = Mathf.Clamp01(tint.b);
+            tint.a = 1f;
             normalStrength = Mathf.Max(0f, normalStrength);
             metallicMultiplier = Mathf.Clamp(metallicMultiplier, 0f, 2f);
             smoothnessMultiplier = Mathf.Clamp(smoothnessMultiplier, 0f, 2f);

@@ -46,6 +46,11 @@ terrains varied and readable, including anti-tiling, stochastic sampling,
 large-scale color and normal variation, distance texturing, and triplanar
 projection for steep cliffs.
 
+Each synchronized Terrain Layer can also use an optional profile tint. The tint
+is bound as a runtime layer parameter, so changing its color or toggling it does
+not rebuild texture arrays or control maps, modify TerrainData, or require the
+terrain to be painted again. Existing generated arrays remain valid.
+
 ![Terrain surface settings](Documentation~/Images/terrain-surface-system-main-settings.png)
 
 ### Paint several ground materials at once

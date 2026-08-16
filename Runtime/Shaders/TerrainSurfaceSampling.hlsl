@@ -28,6 +28,16 @@ struct TS_Surface
     float occlusion;
 };
 
+void TS_ApplyLayerTint(int layerIndex, inout TS_LayerSurface surface)
+{
+    float4 tint = _TS_LayerTint[layerIndex];
+    [branch]
+    if (tint.a > 0.5)
+    {
+        surface.albedo *= tint.rgb;
+    }
+}
+
 float TS_SmoothRange(float value, float2 range)
 {
     return smoothstep(range.x, max(range.y, range.x + 1e-4), value);
@@ -597,8 +607,10 @@ TS_Surface TS_BuildSurfaceFromTop(
 
     TS_LayerSurface layer0 = TS_SampleLayer(
         top.indices.x, positionWS, planarPosition, geometricNormalWS, cameraDistance);
+    TS_ApplyLayerTint(top.indices.x, layer0);
     TS_LayerSurface layer1 = TS_SampleLayer(
         top.indices.y, positionWS, planarPosition, geometricNormalWS, cameraDistance);
+    TS_ApplyLayerTint(top.indices.y, layer1);
     TS_LayerSurface layer2 = layer1;
     TS_LayerSurface layer3 = layer1;
     [branch]
@@ -606,12 +618,14 @@ TS_Surface TS_BuildSurfaceFromTop(
     {
         layer2 = TS_SampleLayer(
             top.indices.z, positionWS, planarPosition, geometricNormalWS, cameraDistance);
+        TS_ApplyLayerTint(top.indices.z, layer2);
     }
     [branch]
     if (_TS_BlendQuality > 3.5)
     {
         layer3 = TS_SampleLayer(
             top.indices.w, positionWS, planarPosition, geometricNormalWS, cameraDistance);
+        TS_ApplyLayerTint(top.indices.w, layer3);
     }
 
     float4 weights = TS_ApplyHeightBlend(

@@ -186,6 +186,11 @@ namespace Dominikozi.TerrainTools.Editor
                 }
                 DrawRelative(layer, "heightOffset");
                 DrawRelative(layer, "heightContrast");
+                DrawRelative(layer, "tintEnabled");
+                if (layer.FindPropertyRelative("tintEnabled").boolValue)
+                {
+                    DrawRelative(layer, "tint");
+                }
                 DrawRelative(layer, "normalStrength");
                 DrawRelative(layer, "metallicMultiplier");
                 DrawRelative(layer, "smoothnessMultiplier");

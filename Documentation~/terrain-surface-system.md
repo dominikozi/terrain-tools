@@ -41,6 +41,16 @@ The array builder creates:
 Per-layer normal, metallic, smoothness, and ambient-occlusion multipliers are
 applied without rebuilding source TerrainLayer assets.
 
+Each synchronized layer also exposes **Tint Enabled** and **Tint**. This tint is
+applied in the shader after sampling the albedo array and before the selected
+layers are combined. It changes only runtime profile parameters, so enabling it
+or adjusting its color does not rebuild texture arrays, regenerate alphamaps or
+control maps, modify TerrainData, or require repainting the terrain. Existing
+generated arrays remain valid.
+
+Rebuild the arrays only when data baked into them changes, such as source
+TerrainLayer textures or their packed surface values.
+
 ### Anti-tiling
 
 Detail noise, macro noise, and normal noise have independent world scales,

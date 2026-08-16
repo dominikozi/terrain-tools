@@ -16,6 +16,7 @@ CBUFFER_START(UnityPerMaterial)
     float4 _TS_ControlTexelSize;
 
     float4 _TS_LayerTiling[TS_MAX_LAYERS];
+    float4 _TS_LayerTint[TS_MAX_LAYERS];
     float4 _TS_LayerHeightSurface[TS_MAX_LAYERS];
     float4 _TS_LayerSurfaceExtra[TS_MAX_LAYERS];
     float4 _TS_LayerAntiTiling[TS_MAX_LAYERS];

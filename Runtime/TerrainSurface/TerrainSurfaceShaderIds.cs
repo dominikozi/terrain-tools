@@ -15,6 +15,7 @@ namespace Dominikozi.TerrainTools
         internal static readonly int TerrainSizeY = Shader.PropertyToID("_TS_TerrainSizeY");
         internal static readonly int ControlTexelSize = Shader.PropertyToID("_TS_ControlTexelSize");
         internal static readonly int LayerTiling = Shader.PropertyToID("_TS_LayerTiling");
+        internal static readonly int LayerTint = Shader.PropertyToID("_TS_LayerTint");
         internal static readonly int LayerHeightSurface = Shader.PropertyToID("_TS_LayerHeightSurface");
         internal static readonly int LayerSurfaceExtra = Shader.PropertyToID("_TS_LayerSurfaceExtra");
         internal static readonly int LayerAntiTiling = Shader.PropertyToID("_TS_LayerAntiTiling");

@@ -8,6 +8,7 @@ namespace Dominikozi.TerrainTools
         private const int MaximumLayerCount = TerrainSurfaceProfile.MaximumShaderLayerCapacity;
 
         private static readonly Vector4[] LayerTiling = new Vector4[MaximumLayerCount];
+        private static readonly Vector4[] LayerTint = new Vector4[MaximumLayerCount];
         private static readonly Vector4[] LayerHeightSurface = new Vector4[MaximumLayerCount];
         private static readonly Vector4[] LayerSurfaceExtra = new Vector4[MaximumLayerCount];
         private static readonly Vector4[] LayerAntiTiling = new Vector4[MaximumLayerCount];
@@ -32,6 +33,7 @@ namespace Dominikozi.TerrainTools
 
             FillLayerParameters(profile.Layers);
             block.SetVectorArray(TerrainSurfaceShaderIds.LayerTiling, LayerTiling);
+            block.SetVectorArray(TerrainSurfaceShaderIds.LayerTint, LayerTint);
             block.SetVectorArray(TerrainSurfaceShaderIds.LayerHeightSurface, LayerHeightSurface);
             block.SetVectorArray(TerrainSurfaceShaderIds.LayerSurfaceExtra, LayerSurfaceExtra);
             block.SetVectorArray(TerrainSurfaceShaderIds.LayerAntiTiling, LayerAntiTiling);
@@ -95,6 +97,7 @@ namespace Dominikozi.TerrainTools
                 if (settings == null || layer == null)
                 {
                     LayerTiling[i] = new Vector4(1f, 1f, 0f, 0f);
+                    LayerTint[i] = new Vector4(1f, 1f, 1f, 0f);
                     LayerHeightSurface[i] = new Vector4(0f, 1f, 1f, 1f);
                     LayerSurfaceExtra[i] = new Vector4(1f, 1f, 0f, 0f);
                     LayerAntiTiling[i] = Vector4.zero;
@@ -111,6 +114,12 @@ namespace Dominikozi.TerrainTools
                     reciprocalY,
                     tileOffset.x * reciprocalX,
                     tileOffset.y * reciprocalY);
+                Color linearTint = settings.Tint.linear;
+                LayerTint[i] = new Vector4(
+                    linearTint.r,
+                    linearTint.g,
+                    linearTint.b,
+                    settings.TintEnabled ? 1f : 0f);
                 LayerHeightSurface[i] = new Vector4(
                     settings.HeightOffset,
                     settings.HeightContrast,
