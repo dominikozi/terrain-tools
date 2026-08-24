@@ -360,52 +360,6 @@ TS_LayerSurface TS_SampleProjection(
     return surface;
 }
 
-float3 TS_GetDominantProjectionAxis(float3 projectionNormalWS)
-{
-    float3 absoluteNormal = abs(projectionNormalWS);
-
-    // Prefer the top projection at an exact top/side tie. This keeps the
-    // projection on the terrain floor stable at the foot of a sharp cliff.
-    if (absoluteNormal.y >= absoluteNormal.x && absoluteNormal.y >= absoluteNormal.z)
-    {
-        return float3(0.0, 1.0, 0.0);
-    }
-
-    return absoluteNormal.x >= absoluteNormal.z
-        ? float3(1.0, 0.0, 0.0)
-        : float3(0.0, 0.0, 1.0);
-}
-
-float3 TS_GetRasterizedSurfaceNormal(
-    float3 positionDx,
-    float3 positionDy,
-    float3 geometricNormalWS)
-{
-    float3 rasterizedNormalWS = cross(positionDy, positionDx);
-    float normalLengthSquared = dot(rasterizedNormalWS, rasterizedNormalWS);
-    if (normalLengthSquared < 1e-10)
-    {
-        return geometricNormalWS;
-    }
-
-    rasterizedNormalWS *= rsqrt(normalLengthSquared);
-    return dot(rasterizedNormalWS, geometricNormalWS) < 0.0
-        ? -rasterizedNormalWS
-        : rasterizedNormalWS;
-}
-
-float TS_GetProjectionAxisLock(
-    float3 rasterizedNormalWS,
-    float3 geometricNormalWS)
-{
-    float normalMismatch = 1.0 - saturate(dot(rasterizedNormalWS, geometricNormalWS));
-
-    // The terrain normal texture is filtered and can leak a cliff normal onto
-    // the adjacent floor. Between roughly 10 and 20 degrees of disagreement,
-    // progressively trust the rasterized surface and lock to one projection.
-    return smoothstep(0.015, 0.060, normalMismatch);
-}
-
 TS_LayerSurface TS_SampleLayer(
     int layerIndex,
     float3 positionWS,
@@ -429,17 +383,7 @@ TS_LayerSurface TS_SampleLayer(
             cameraDistance);
     }
 
-    float3 rasterizedNormalWS = TS_GetRasterizedSurfaceNormal(
-        positionDx,
-        positionDy,
-        geometricNormalWS);
-    float projectionAxisLock = TS_GetProjectionAxisLock(
-        rasterizedNormalWS,
-        geometricNormalWS);
-    float3 projectionNormalWS = normalize(lerp(
-        geometricNormalWS,
-        rasterizedNormalWS,
-        projectionAxisLock));
+    float3 projectionNormalWS = normalize(geometricNormalWS);
 
     float3 signs = sign(projectionNormalWS);
     signs = signs + (1.0 - abs(signs));
@@ -463,56 +407,34 @@ TS_LayerSurface TS_SampleLayer(
     axisWeights = max(0.0, weightedHeight + transition - maxHeight) * axisWeights + 1e-6;
     axisWeights /= max(dot(axisWeights, 1.0), 1e-5);
 
-    float3 dominantAxisWeights = TS_GetDominantProjectionAxis(projectionNormalWS);
-    axisWeights = lerp(axisWeights, dominantAxisWeights, projectionAxisLock);
+    float3 projectionBaseX = float3(signs.x, 0.0, 0.0);
+    float3 projectionBaseY = float3(0.0, signs.y, 0.0);
+    float3 projectionBaseZ = float3(0.0, 0.0, signs.z);
+    float3 blendedProjectionBase =
+        projectionBaseX * axisWeights.x +
+        projectionBaseY * axisWeights.y +
+        projectionBaseZ * axisWeights.z;
+    float3 blendedProjectionNormal =
+        axisX.normalWS * axisWeights.x +
+        axisY.normalWS * axisWeights.y +
+        axisZ.normalWS * axisWeights.z;
 
-    // A heightfield cliff contains a narrow row of transition triangles at its
-    // foot. Never blend their side UVs into the top projection: choose one
-    // family explicitly. Triplanar sharpness also biases the boundary toward
-    // the top projection, so larger values reserve side projection for
-    // progressively steeper, genuinely cliff-like geometry.
-    float topProjectionScore =
-        abs(rasterizedNormalWS.y) * max(sharpness, 1.0);
-    float sideProjectionScore =
-        max(abs(rasterizedNormalWS.x), abs(rasterizedNormalWS.z));
-    float useTopProjection = step(sideProjectionScore, topProjectionScore);
-
-    float3 sideAxisWeights = float3(axisWeights.x, 0.0, axisWeights.z);
-    float sideAxisWeightSum = sideAxisWeights.x + sideAxisWeights.z;
-    float hasStableSideProjection = step(1e-5, sideAxisWeightSum);
-
-    // If height-aware projection weighting eliminated both side axes, treating
-    // the fragment as a side would leave weights whose sum is below one and
-    // produce black, block-shaped artifacts. Keep the top projection instead.
-    useTopProjection = max(useTopProjection, 1.0 - hasStableSideProjection);
-    sideAxisWeights /= max(sideAxisWeightSum, 1e-5);
-    float3 fallbackSideAxis = abs(rasterizedNormalWS.x) >= abs(rasterizedNormalWS.z)
-        ? float3(1.0, 0.0, 0.0)
-        : float3(0.0, 0.0, 1.0);
-    sideAxisWeights = lerp(
-        fallbackSideAxis,
-        sideAxisWeights,
-        hasStableSideProjection);
-    axisWeights = lerp(
-        sideAxisWeights,
-        float3(0.0, 1.0, 0.0),
-        useTopProjection);
-
-    // Material channels benefit from sharp, height-aware axis selection, but
-    // applying those weights to projection-space normals snaps the lighting
-    // toward a cardinal world axis. Linear geometric weights reconstruct the
-    // terrain normal exactly when the layer normal strength is zero.
-    float3 normalAxisWeights = abs(geometricNormalWS);
-    normalAxisWeights /= max(dot(normalAxisWeights, 1.0), 1e-5);
+    // Treat the triplanar normal result as a perturbation of the projection
+    // bases, then apply that perturbation to the actual terrain normal. This
+    // preserves the geometric normal when normal strength is zero and prevents
+    // unrelated projection-space normals from cancelling near axis boundaries.
+    float3 triplanarNormalWS =
+        geometricNormalWS + blendedProjectionNormal - blendedProjectionBase;
+    float triplanarNormalLengthSquared = dot(triplanarNormalWS, triplanarNormalWS);
+    triplanarNormalWS = triplanarNormalLengthSquared > 1e-6
+        ? triplanarNormalWS * rsqrt(triplanarNormalLengthSquared)
+        : geometricNormalWS;
 
     TS_LayerSurface surface;
     surface.albedo =
         axisX.albedo * axisWeights.x + axisY.albedo * axisWeights.y + axisZ.albedo * axisWeights.z;
     surface.height = dot(float3(axisX.height, axisY.height, axisZ.height), axisWeights);
-    surface.normalWS = normalize(
-        axisX.normalWS * normalAxisWeights.x +
-        axisY.normalWS * normalAxisWeights.y +
-        axisZ.normalWS * normalAxisWeights.z);
+    surface.normalWS = triplanarNormalWS;
     surface.metallic = dot(float3(axisX.metallic, axisY.metallic, axisZ.metallic), axisWeights);
     surface.smoothness = dot(float3(axisX.smoothness, axisY.smoothness, axisZ.smoothness), axisWeights);
     surface.occlusion = dot(float3(axisX.occlusion, axisY.occlusion, axisZ.occlusion), axisWeights);
